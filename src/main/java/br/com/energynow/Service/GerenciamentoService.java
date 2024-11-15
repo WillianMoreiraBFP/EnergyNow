@@ -21,20 +21,17 @@ public class GerenciamentoService {
         d.create (geren);
     }
 
-    public List<GerenciamentoDTO> getList (String email) throws SQLException {
+    /*public List<GerenciamentoDTO> getList (String email) throws SQLException {
 
         List<Gerenciamento> l = d.readList (email);
 
-
-
-
-    }
-
+    }*/
 
 
 
 
 
+    //metodo para indentificar o UF do CEP
     private static String indentificadorUF(String cep){
         // Remover qualquer caractere não numérico, caso o CEP tenha pontos ou traços.
         cep = cep.replaceAll("[^0-9]", "");
@@ -104,11 +101,29 @@ public class GerenciamentoService {
         }
     }
 
+    //metodos para descobrir os preço da conta de luz com os 3 variaçoes(Normal, Com economia e Com placas solares)
     private double precoUF(String uf) throws SQLException {
         PrecoKWHDao precoKWHDao = new PrecoKWHDao ();
         return precoKWHDao.getPreco (uf);
     }
 
+    //Normal
+    private double precoN(double ufpreco, int kWh ){
+        return ufpreco * kWh;
+    }
+
+    //Com habitos de economia
+    private double precoCE(double preco){//Utiliza o resultado do precoN
+        return preco*0.20;
+    }
+
+    //Com placa solar gerando 65 kWh por mes
+    private double precoCP(double ufpreco, int kWh, int nPlacasSolares){
+        int resultkWh = kWh - (65 * nPlacasSolares);
+        return ufpreco * resultkWh;
+    }
+
+    //metodos para transformar mes(Numero) em mes(Nome)
     private static String transformaMes (String data){
         String[] months = {
                 "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
