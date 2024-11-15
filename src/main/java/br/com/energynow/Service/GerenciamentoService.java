@@ -1,23 +1,34 @@
 package br.com.energynow.Service;
 
 import br.com.energynow.DAO.GerenciamentoDao;
+import br.com.energynow.DAO.PrecoKWHDao;
 import br.com.energynow.DAO.UserDao;
 import br.com.energynow.DTO.GerenciamentoDTO;
 import br.com.energynow.model.Gerenciamento;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GerenciamentoService {
     GerenciamentoDao d = new GerenciamentoDao ();
-    UserDao dUser = new UserDao();
 
     public void create (GerenciamentoDTO gerenDTO) throws SQLException {
+        UserDao dUser = new UserDao();
         Gerenciamento geren = new Gerenciamento (gerenDTO);
 
         geren.setUf (indentificadorUF (dUser.readCep (gerenDTO.getEmail ())));
         d.create (geren);
     }
 
+    public List<GerenciamentoDTO> getList (String email) throws SQLException {
+
+        List<Gerenciamento> l = d.readList (email);
+
+
+
+
+    }
 
 
 
@@ -88,8 +99,14 @@ public class GerenciamentoService {
         } else if (cepInt >= 80000000 && cepInt <= 82999999) {
             return "PR";
         }else {
-            return "Estado não encontrado";
+            System.out.println ("Estado não encontrado");
+            return "";
         }
+    }
+
+    private double precoUF(String uf) throws SQLException {
+        PrecoKWHDao precoKWHDao = new PrecoKWHDao ();
+        return precoKWHDao.getPreco (uf);
     }
 
 
