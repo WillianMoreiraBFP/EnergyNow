@@ -35,7 +35,7 @@ public class GerenciamentoService {
 
 
 
-    private String indentificadorUF(String cep){
+    private static String indentificadorUF(String cep){
         // Remover qualquer caractere não numérico, caso o CEP tenha pontos ou traços.
         cep = cep.replaceAll("[^0-9]", "");
 
@@ -107,6 +107,22 @@ public class GerenciamentoService {
     private double precoUF(String uf) throws SQLException {
         PrecoKWHDao precoKWHDao = new PrecoKWHDao ();
         return precoKWHDao.getPreco (uf);
+    }
+
+    private static String transformaMes (String data){
+        String[] months = {
+                "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+                "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        };
+
+        String mes = getMes (data);
+        int mesInt = Integer.parseInt(mes);
+
+        return months[mesInt - 1];
+    }
+
+    private static String getMes(String data){
+        return data.substring (3, data.length () -5);
     }
 
 
