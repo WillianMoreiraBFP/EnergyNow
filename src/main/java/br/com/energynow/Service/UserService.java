@@ -1,5 +1,6 @@
 package br.com.energynow.Service;
 
+import br.com.energynow.DAO.GerenciamentoDao;
 import br.com.energynow.DAO.UserDao;
 import br.com.energynow.model.User;
 
@@ -24,6 +25,9 @@ public class UserService {
     }
 
     public void delete (String email) throws SQLException{
+        GerenciamentoDao dGeren = new GerenciamentoDao ();
+
+        dGeren.deleteTudo (email);
         d.delete(email);
     }
 

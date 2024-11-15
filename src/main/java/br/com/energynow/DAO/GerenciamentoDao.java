@@ -49,10 +49,10 @@ public class GerenciamentoDao implements IDao<Gerenciamento, Integer> {
         return gerenciamento;
     }
 
-    public List<Gerenciamento> readList(Gerenciamento geren) throws SQLException{
+    public List<Gerenciamento> readList(String email) throws SQLException{
         List<Gerenciamento> v = new ArrayList<> ();
 
-        String sql = "SELECT  id, data, kwh, email, UF FROM t_gerenciamento WHERE email = " + geren.getEmail ();
+        String sql = "SELECT  id, data, kwh, email, UF FROM t_gerenciamento WHERE email = " + email;
         conexaoJDBC.conectar ();
         Connection conexao = conexaoJDBC.getConexao ();
 
@@ -102,4 +102,18 @@ public class GerenciamentoDao implements IDao<Gerenciamento, Integer> {
         statement.close();
         conexao.close();
     }
+
+    public void deleteTudo(String email) throws SQLException {
+        String sql = "DELETE FROM t_gerenciamento WHERE email = ?";
+        conexaoJDBC.conectar();
+        Connection conexao = conexaoJDBC.getConexao();
+
+        PreparedStatement statement = conexao.prepareStatement(sql);
+        statement.setString (1, email);
+        statement.execute();
+
+        statement.close();
+        conexao.close();
+    }
+
 }
