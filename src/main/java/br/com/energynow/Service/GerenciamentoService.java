@@ -61,6 +61,18 @@ public class GerenciamentoService {
 
     }
 
+    public void update (GerenciamentoDTO gerenDTO) throws SQLException{
+        UserDao dUser = new UserDao();
+        Gerenciamento geren = new Gerenciamento (gerenDTO);
+
+        geren.setUf (indentificadorUF (dUser.readCep (gerenDTO.getEmail ())));
+        d.update (geren);
+    }
+
+    public void delete (int id) throws SQLException {
+        d.delete (id);
+    }
+
     //metodo para indentificar o UF do CEP
     private static String indentificadorUF(String cep){
         // Remover qualquer caractere não numérico, caso o CEP tenha pontos ou traços.
