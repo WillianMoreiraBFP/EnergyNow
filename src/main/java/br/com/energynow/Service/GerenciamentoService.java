@@ -14,7 +14,7 @@ public class GerenciamentoService {
     public void create (GerenciamentoDTO gerenDTO) throws SQLException {
         Gerenciamento geren = new Gerenciamento (gerenDTO);
 
-        geren.setUf (intentificadorUF (dUser.readCep (gerenDTO.getEmail ())));
+        geren.setUf (indentificadorUF (dUser.readCep (gerenDTO.getEmail ())));
         d.create (geren);
     }
 
@@ -22,7 +22,9 @@ public class GerenciamentoService {
 
 
 
-    private String intentificadorUF(String cep){
+
+
+    private String indentificadorUF(String cep){
         // Remover qualquer caractere não numérico, caso o CEP tenha pontos ou traços.
         cep = cep.replaceAll("[^0-9]", "");
 

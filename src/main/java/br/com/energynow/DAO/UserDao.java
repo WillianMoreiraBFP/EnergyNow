@@ -38,6 +38,7 @@ public class UserDao implements IDao<User, String> {
         PreparedStatement statement = conexao.prepareStatement(sql);
         statement.setString(1, user.getEmail());
         statement.setString(2, user.getSenha());
+
         ResultSet result = statement.executeQuery();
         if (result.next()) {
             user.setNome(result.getString(1));
