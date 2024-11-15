@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserDao implements IUserDao {
+public class UserDao implements IDao<User, String> {
     ConexaoJDBC conexaoJDBC = new ConexaoJDBC();
 
 
@@ -55,9 +55,33 @@ public class UserDao implements IUserDao {
         return user;
     }
 
+    public String readCep(String email) throws SQLException{
+        String cep;
+
+        String sql = "SELECT cep FROM t_user WHERE email = ? ";
+        conexaoJDBC.conectar();
+        Connection conexao = conexaoJDBC.getConexao();
+
+        PreparedStatement statement = conexao.prepareStatement(sql);
+        statement.setString(1, email);
+        ResultSet result = statement.executeQuery();
+        if (result.next()) {
+            cep = result.getString(1);
+
+        } else {
+            throw new SQLException();
+        }
+
+        result.close();
+        statement.close();
+        conexao.close();
+
+        return cep;
+    }
+
     @Override
-    public void update(User user, String email) throws SQLException{
-        String sql = "UPDATE t_user SET nome = ?, senha  = ?, cpf  = ?, email  = ?, cep = ? WHERE email = ?";
+    public void update(User user) throws SQLException{
+        String sql = "UPDATE t_user SET nome = ?, senha  = ?, cpf  = ?, cep = ? WHERE email = ?";
         conexaoJDBC.conectar();
         Connection conexao = conexaoJDBC.getConexao();
 
@@ -65,9 +89,8 @@ public class UserDao implements IUserDao {
         statement.setString(1, user.getNome());
         statement.setString(2, user.getSenha());
         statement.setString(3, user.getCpf());
-        statement.setString(4, user.getEmail());
         statement.setString(5, user.getCep());
-        statement.setString(6, email);
+        statement.setString(6, user.getEmail ());
 
         statement.close();
         conexao.close();
@@ -75,13 +98,13 @@ public class UserDao implements IUserDao {
     }
 
     @Override
-    public void delete(User user) throws SQLException{
+    public void delete(String email) throws SQLException{
         String sql = "DELETE FROM t_user WHERE email = ?";
         conexaoJDBC.conectar();
         Connection conexao = conexaoJDBC.getConexao();
 
         PreparedStatement statement = conexao.prepareStatement(sql);
-        statement.setString (1, user.getEmail());
+        statement.setString (1, email);
         statement.execute();
 
         statement.close();

@@ -19,12 +19,12 @@ public class UserService {
        return user;
     }
 
-    public void update (User user, String email) throws SQLException{
-        d.update(user, email);
+    public void update (User user) throws SQLException{
+        d.update(user);
     }
 
-    public void delete (User user) throws SQLException{
-        d.delete(user);
+    public void delete (String email) throws SQLException{
+        d.delete(email);
     }
 
 }

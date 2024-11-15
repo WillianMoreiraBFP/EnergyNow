@@ -2,24 +2,104 @@ package br.com.energynow.DAO;
 
 import br.com.energynow.model.Gerenciamento;
 
-import java.sql.SQLException;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
-public class GerenciamentoDao implements IGerenciamentoDao {
+public class GerenciamentoDao implements IDao<Gerenciamento, Integer> {
+    ConexaoJDBC conexaoJDBC = new ConexaoJDBC();
+
     @Override
-    public void create(Gerenciamento geren) throws SQLException{
+    public void create(Gerenciamento geren) throws SQLException {
+
+        String sql = "INSERT INTO t_gerenciamento (data, kwh, email, UF) VALUES (TO_DATE('?', 'MM-YYYY'), ?, ?, ?, ?) ";
+        conexaoJDBC.conectar();
+        Connection conexao = conexaoJDBC.getConexao();
+
+        PreparedStatement statement = conexao.prepareStatement(sql);
+        statement.setString (1, geren.getData ());
+        statement.setString (2, geren.getEmail ());
+        statement.setInt (2, geren.getkWh ());
+        statement.setString (4, geren.getUf ());
+        statement.execute();
+
+        statement.close();
+        conexao.close();
+
+
     }
 
     @Override
-    public Gerenciamento read(Gerenciamento geren) throws SQLException{
-        return null;
+    public Gerenciamento read(Gerenciamento geren) throws SQLException {
+        String sql = "SELECT  id, data, kwh, email, UF FROM t_gerenciamento WHERE email = " + geren.getEmail ();
+        conexaoJDBC.conectar ();
+        Connection conexao = conexaoJDBC.getConexao ();
+
+        Statement statement = conexao.createStatement();
+        ResultSet result = statement.executeQuery(sql);
+
+        Gerenciamento gerenciamento = new Gerenciamento ();
+        gerenciamento.setId (result.getInt (1));
+        gerenciamento.setData (String.valueOf (result.getDate (2)));
+        gerenciamento.setkWh (result.getInt (3));
+        gerenciamento.setEmail (result.getString (4));
+        gerenciamento.setUf (result.getString (5));
+
+        return gerenciamento;
+    }
+
+    public List<Gerenciamento> readList(Gerenciamento geren) throws SQLException{
+        List<Gerenciamento> v = new ArrayList<> ();
+
+        String sql = "SELECT  id, data, kwh, email, UF FROM t_gerenciamento WHERE email = " + geren.getEmail ();
+        conexaoJDBC.conectar ();
+        Connection conexao = conexaoJDBC.getConexao ();
+
+        Statement statement = conexao.createStatement();
+        ResultSet result = statement.executeQuery(sql);
+
+        while (result.next()) {
+            Gerenciamento gerenciamento = new Gerenciamento ();
+            gerenciamento.setId (result.getInt (1));
+            gerenciamento.setData (String.valueOf (result.getDate (2)));
+            gerenciamento.setkWh (result.getInt (3));
+            gerenciamento.setEmail (result.getString (4));
+            gerenciamento.setUf (result.getString (5));
+
+            v.add(gerenciamento);
+        }
+        return v;
     }
 
     @Override
-    public void updat(Gerenciamento geren) throws SQLException{
+    public void update(Gerenciamento geren) throws SQLException {
+        String sql = "UPDATE t_gerenciamento SET data = TO_DATE('?', 'MM-YYYY'), kwh= ?, email= ?, UF= ? WHERE id = ?";
+        conexaoJDBC.conectar ();
+        Connection conexao = conexaoJDBC.getConexao ();
+
+        PreparedStatement statement = conexao.prepareStatement (sql);
+        statement.setString (1, geren.getData ());
+        statement.setInt (2, geren.getkWh ());
+        statement.setString (3, geren.getEmail ());
+        statement.setString (4, geren.getUf ());
+        statement.setInt (5, geren.getId ());
+
+        statement.close ();
+        conexao.close ();
     }
 
     @Override
-    public void delete(Gerenciamento geren) throws SQLException {
+    public void delete(Integer id) throws SQLException {
+        String sql = "DELETE FROM t_gerenciamento WHERE id = ?";
+        conexaoJDBC.conectar();
+        Connection conexao = conexaoJDBC.getConexao();
 
+        PreparedStatement statement = conexao.prepareStatement(sql);
+        statement.setInt (1, id);
+        statement.execute();
+
+        statement.close();
+        conexao.close();
     }
 }
