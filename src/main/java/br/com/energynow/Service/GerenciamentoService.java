@@ -21,15 +21,45 @@ public class GerenciamentoService {
         d.create (geren);
     }
 
-    /*public List<GerenciamentoDTO> getList (String email) throws SQLException {
+    public List<GerenciamentoDTO> getList (String email, int nplacas) throws SQLException {
+        UserDao dUser = new UserDao();
 
+        List<GerenciamentoDTO> list = new ArrayList<> ();
         List<Gerenciamento> l = d.readList (email);
 
-    }*/
+        if (l.size () > 3){
+            List<Gerenciamento> l2 = l.subList (Math.max (l.size () - 3, 0), l.size ());
 
+            for (int i = 0; i <= 2; ++i){
+                GerenciamentoDTO geren = new GerenciamentoDTO (l.get (i));
 
+                //Metodos para calcular os valores
+                double p = precoUF (indentificadorUF (dUser.readCep (geren.getEmail ())));
+                geren.setPrecokWhN (precoN (p, geren.getkWh ()));
+                geren.setPrecokWhE (precoCE (p,geren.getkWh()));
+                geren.setPrecokWhR (precoCP (p, geren.getkWh () , nplacas));
+                //metodo para pegar o month
+                geren.setMonth (geren.getData ());
+                list.add (geren);
+            }
+        }else {
+            for (int i = 0; i <= l.size (); ++i){
+                GerenciamentoDTO geren = new GerenciamentoDTO (l.get (i));
 
+                //Metodos para calcular os valores
+                double p = precoUF (indentificadorUF (dUser.readCep (geren.getEmail ())));
+                geren.setPrecokWhN (precoN (p, geren.getkWh ()));
+                geren.setPrecokWhE (precoCE (p,geren.getkWh()));
+                geren.setPrecokWhR (precoCP (p, geren.getkWh () , nplacas));
+                //metodo para pegar o month
+                geren.setMonth (geren.getData ());
+                list.add (geren);
+            }
+        }
 
+        return list;
+
+    }
 
     //metodo para indentificar o UF do CEP
     private static String indentificadorUF(String cep){
@@ -113,8 +143,8 @@ public class GerenciamentoService {
     }
 
     //Com habitos de economia
-    private double precoCE(double preco){//Utiliza o resultado do precoN
-        return preco*0.20;
+    private double precoCE(double ufpreco, int kWh){
+        return (ufpreco * kWh)*0.2;
     }
 
     //Com placa solar gerando 65 kWh por mes
@@ -130,15 +160,9 @@ public class GerenciamentoService {
                 "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
         };
 
-        String mes = getMes (data);
-        int mesInt = Integer.parseInt(mes);
+        int nDMes = Integer.parseInt (data.substring (3, data.length () -5));
 
-        return months[mesInt - 1];
+        return months[nDMes - 1];
     }
-
-    private static String getMes(String data){
-        return data.substring (3, data.length () -5);
-    }
-
 
 }

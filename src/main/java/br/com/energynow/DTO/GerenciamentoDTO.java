@@ -1,5 +1,7 @@
 package br.com.energynow.DTO;
 
+import br.com.energynow.model.Gerenciamento;
+
 public class GerenciamentoDTO {
     private int id;
     private String data;
@@ -8,13 +10,12 @@ public class GerenciamentoDTO {
     private double precokWhE;//precokWh se a pessoa economisar
     private double precokWhR;//precokWh se a pessoa utilizar energia renovavel(Placa solar)
     private String email;
-    private String cep;
     private String month;
 
     public GerenciamentoDTO() {
     }
 
-    public GerenciamentoDTO(int id , String data , int kWh , double precokWhN , double precokWhE , double precokWhR , String email ,String cep, String month) {
+    public GerenciamentoDTO(int id , String data , int kWh , double precokWhN , double precokWhE , double precokWhR , String email, String month) {
         this.id = id;
         this.data = data;
         this.kWh = kWh;
@@ -22,7 +23,6 @@ public class GerenciamentoDTO {
         this.precokWhE = precokWhE;
         this.precokWhR = precokWhR;
         this.email = email;
-        this.cep = cep;
         this.month = month;
     }
 
@@ -30,6 +30,13 @@ public class GerenciamentoDTO {
         this.data = data;
         this.kWh = kWh;
         this.email = email;
+    }
+
+    public GerenciamentoDTO(Gerenciamento geren) {
+        this.id = geren.getId ();
+        this.data = geren.getData ();
+        this.kWh = geren.getkWh ();
+        this.email = geren.getEmail ();
     }
 
     public int getId() {
