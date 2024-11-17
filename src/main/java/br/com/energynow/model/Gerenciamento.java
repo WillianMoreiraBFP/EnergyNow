@@ -2,8 +2,6 @@ package br.com.energynow.model;
 
 import br.com.energynow.DTO.GerenciamentoDTO;
 
-import java.sql.Date;
-
 public class Gerenciamento {
     private int id;
     private String data;

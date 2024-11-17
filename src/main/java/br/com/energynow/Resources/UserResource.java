@@ -1,5 +1,6 @@
 package br.com.energynow.Resources;
 
+import br.com.energynow.Exceptions.CEPInvalidoException;
 import br.com.energynow.Service.UserService;
 import br.com.energynow.model.User;
 import jakarta.ws.rs.*;
@@ -31,6 +32,8 @@ public class UserResource {
                         .entity ("{\"error\":\"Erro inesperado: " + e.getMessage () + "\"}")
                         .build ();
             }
+        } catch (CEPInvalidoException e) {
+            throw new RuntimeException (e);
         }
     }
 

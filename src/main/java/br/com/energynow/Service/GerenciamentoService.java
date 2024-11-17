@@ -56,9 +56,7 @@ public class GerenciamentoService {
                 list.add (geren);
             }
         }
-
         return list;
-
     }
 
     public void update (GerenciamentoDTO gerenDTO) throws SQLException{
@@ -72,6 +70,7 @@ public class GerenciamentoService {
     public void delete (int id) throws SQLException {
         d.delete (id);
     }
+
 
     //metodo para indentificar o UF do CEP
     private static String indentificadorUF(String cep){
