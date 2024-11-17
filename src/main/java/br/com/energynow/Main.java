@@ -23,7 +23,7 @@ public class Main {
     public static HttpServer startServer() {
         // create a resource config that scans for JAX-RS resources and providers
         // in com.fiap package
-        final ResourceConfig rc = new ResourceConfig().packages("br.com.monster");
+        final ResourceConfig rc = new ResourceConfig().packages("br.com.energynow");
         rc.register (CorsFilter.class);
 
         // create and start a new instance of grizzly http server

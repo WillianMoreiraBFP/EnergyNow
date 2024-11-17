@@ -2,8 +2,6 @@ package br.com.energynow.Resources;
 
 import br.com.energynow.DTO.GerenciamentoDTO;
 import br.com.energynow.Service.GerenciamentoService;
-import br.com.energynow.Service.UserService;
-import br.com.energynow.model.User;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 
@@ -14,6 +12,7 @@ import java.util.List;
 public class GerenciamentoResouce {
     GerenciamentoService gerenService = new GerenciamentoService ();
 
+    @POST
     @Path("create")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response create(GerenciamentoDTO geren) {
@@ -22,12 +21,19 @@ public class GerenciamentoResouce {
             return Response.ok ().build ();
 
         } catch (SQLException e) {
-            return Response.status (Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity ("{\"error\":\"Erro inesperado: " + e.getMessage () + "\"}")
-                    .build ();
+            if (e.getErrorCode () == 0) {
+                return Response.status (Response.Status.NOT_FOUND)
+                        .entity ("{\"error\":\"Usuario não encontrado\"}")
+                        .build ();
+            } else {
+                return Response.status (Response.Status.INTERNAL_SERVER_ERROR)
+                        .entity ("{\"error\":\"Erro inesperado: " + e.getMessage () + "\"}")
+                        .build ();
+            }
         }
     }
 
+    @GET
     @Path ("getLista/{email}/{n}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

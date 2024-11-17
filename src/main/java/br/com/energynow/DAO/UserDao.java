@@ -90,8 +90,10 @@ public class UserDao implements IDao<User, String> {
         statement.setString(1, user.getNome());
         statement.setString(2, user.getSenha());
         statement.setString(3, user.getCpf());
-        statement.setString(5, user.getCep());
-        statement.setString(6, user.getEmail ());
+        statement.setString(4, user.getCep());
+        statement.setString(5, user.getEmail ());
+
+        statement.executeUpdate();
 
         statement.close();
         conexao.close();

@@ -11,7 +11,7 @@ public class UserService {
     UserDao d = new UserDao();
 
     public User cadastro (User user) throws SQLException, CEPInvalidoException {
-        validarCep (user.getCep ());
+        user.setCep (validarCep (user.getCep ()));
         d.create(user);
         d.read(user);
         return user;

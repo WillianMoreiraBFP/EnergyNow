@@ -13,6 +13,7 @@ import java.sql.SQLException;
 public class UserResource {
     UserService userService = new UserService ();
 
+    @POST
     @Path("cadastro")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -69,7 +70,7 @@ public class UserResource {
 
         }catch (SQLException e){
             return Response.status (Response.Status.BAD_REQUEST)
-                    .entity ("{\"error\":\"Erro ao atualizar dados.\"}")
+                    .entity ("{\"error\":\"Erro ao atualizar dados.\"\n"+ e.getMessage() + "\"}")
                     .build ();
         }
 
