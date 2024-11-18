@@ -28,10 +28,11 @@ public class GerenciamentoService {
         List<Gerenciamento> l = d.readList (email);
 
         if (l.size () > 3){
+            l.sort ((n1,n2) -> Integer.compare (n1.getId () , n2.getId ()));
             List<Gerenciamento> l2 = l.subList (Math.max (l.size () - 3, 0), l.size ());
 
             for (int i = 0; i <= 2; ++i){
-                GerenciamentoDTO geren = new GerenciamentoDTO (l.get (i));
+                GerenciamentoDTO geren = new GerenciamentoDTO (l2.get (i));
 
                 //Metodos para calcular os valores
                 double p = precoUF (indentificadorUF (dUser.readCep (email)));
@@ -39,7 +40,7 @@ public class GerenciamentoService {
                 geren.setPrecokWhE (precoCE (p,geren.getkWh()));
                 geren.setPrecokWhR (precoCP (p, geren.getkWh () , nplacas));
                 //metodo para pegar o month
-                geren.setMonth (geren.getData ());
+                geren.setMonth (transformaMes(geren.getData ()));
                 list.add (geren);
             }
         }else {
