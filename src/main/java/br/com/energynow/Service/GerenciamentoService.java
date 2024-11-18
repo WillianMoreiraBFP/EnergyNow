@@ -80,6 +80,8 @@ public class GerenciamentoService {
 
         List<GerenciamentoDTO> list = new ArrayList<> ();
         List<Gerenciamento> l = d.readList (email);
+        int mediakWh = 0;
+        int n = 0;
 
         if (l.size () > 3){
             l.sort ((n1,n2) -> Integer.compare (n1.getId () , n2.getId ()));
@@ -96,6 +98,9 @@ public class GerenciamentoService {
                 //metodo para pegar o month
                 geren.setMonth (transformaMes(geren.getData ()));
                 list.add (geren);
+
+                mediakWh = mediakWh + geren.getkWh ();
+                n = n+1;
             }
         }else {
             for (int i = 0; i < l.size (); ++i){
@@ -109,8 +114,22 @@ public class GerenciamentoService {
                 //metodo para pegar o month
                 geren.setMonth (transformaMes(geren.getData ()));
                 list.add (geren);
+
+                mediakWh = mediakWh + geren.getkWh ();
+                n = n+1;
             }
         }
+
+        GerenciamentoDTO geren = new GerenciamentoDTO ();
+
+        geren.setkWh (mediakWh/n);
+        double p = precoUF (indentificadorUF (dUser.readCep (email)));
+        geren.setPrecokWhN (precoN (p, geren.getkWh ()));
+        geren.setPrecokWhE (precoCE (p,geren.getkWh()));
+        geren.setPrecokWhR (precoCP (p, geren.getkWh () , nplacas));
+        geren.setMonth ("Próximo Mês");
+        list.add (geren);
+
         return list;
     }
 

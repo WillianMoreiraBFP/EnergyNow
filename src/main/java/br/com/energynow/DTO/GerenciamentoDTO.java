@@ -40,6 +40,11 @@ public class GerenciamentoDTO {
         this.email = geren.getEmail ();
     }
 
+    public GerenciamentoDTO(GerenciamentoDTO geren) {
+        this.kWh = geren.getkWh ();
+        this.email = geren.getEmail ();
+    }
+
     public int getId() {
         return id;
     }
