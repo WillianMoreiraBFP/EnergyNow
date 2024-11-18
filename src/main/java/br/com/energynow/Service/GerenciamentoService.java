@@ -128,6 +128,8 @@ public class GerenciamentoService {
         geren.setPrecokWhE (precoCE (p,geren.getkWh()));
         geren.setPrecokWhR (precoCP (p, geren.getkWh () , nplacas));
         geren.setMonth ("Próximo Mês");
+        geren.setEconomiaE (geren.getPrecokWhN () - geren.getPrecokWhE ());
+        geren.setEconomiaR (geren.getPrecokWhN () - geren.getPrecokWhR ());
         list.add (geren);
 
         return list;

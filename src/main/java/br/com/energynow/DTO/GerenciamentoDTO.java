@@ -11,6 +11,8 @@ public class GerenciamentoDTO {
     private double precokWhR;//precokWh se a pessoa utilizar energia renovavel(Placa solar)
     private String email;
     private String month;
+    private double economiaE;
+    private double economiaR;
 
     public GerenciamentoDTO() {
     }
@@ -43,6 +45,22 @@ public class GerenciamentoDTO {
     public GerenciamentoDTO(GerenciamentoDTO geren) {
         this.kWh = geren.getkWh ();
         this.email = geren.getEmail ();
+    }
+
+    public double getEconomiaR() {
+        return economiaR;
+    }
+
+    public void setEconomiaR(double economiaR) {
+        this.economiaR = economiaR;
+    }
+
+    public double getEconomiaE() {
+        return economiaE;
+    }
+
+    public void setEconomiaE(double economia) {
+        this.economiaE = economia;
     }
 
     public int getId() {
