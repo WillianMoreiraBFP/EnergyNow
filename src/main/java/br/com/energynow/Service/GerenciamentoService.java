@@ -3,11 +3,16 @@ package br.com.energynow.Service;
 import br.com.energynow.DAO.GerenciamentoDao;
 import br.com.energynow.DAO.PrecoKWHDao;
 import br.com.energynow.DAO.UserDao;
+import br.com.energynow.DTO.CalcuraloraGerenDTO;
 import br.com.energynow.DTO.GerenciamentoDTO;
 import br.com.energynow.model.Gerenciamento;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class GerenciamentoService {
@@ -20,6 +25,58 @@ public class GerenciamentoService {
         geren.setUf (indentificadorUF (dUser.readCep (gerenDTO.getEmail ())));
         d.create (geren);
     }
+
+    public void createGrupo(CalcuraloraGerenDTO calculadora) throws SQLException {
+        UserDao dUser = new UserDao();
+        LocalDate date = LocalDate.now ();
+
+        int month = date.getMonthValue ();
+        int year = date.getYear ();
+
+        Gerenciamento geren1 = new Gerenciamento (""+month+"-"+year, calculadora.getkWh1 () , calculadora.getEmail ());
+        geren1.setUf (indentificadorUF (dUser.readCep (calculadora.getEmail ())));
+
+        if(month - 1 > 1){
+            String month1 = String.valueOf (month -1);
+            Gerenciamento geren2 = new Gerenciamento (month1+"-"+year, calculadora.getkWh2 () , calculadora.getEmail ());
+            geren2.setUf (indentificadorUF (dUser.readCep (calculadora.getEmail ())));
+
+            if(month - 2 > 1){
+                String month2 = String.valueOf (month -2);
+                Gerenciamento geren3 = new Gerenciamento (month2+"-"+year, calculadora.getkWh3 () , calculadora.getEmail ());
+                geren3.setUf (indentificadorUF (dUser.readCep (calculadora.getEmail ())));
+
+                d.create (geren3);
+                d.create (geren2);
+                d.create (geren1);
+            }else {
+                String month2 = "12";
+                String year1 = String.valueOf (year - 1);
+                Gerenciamento geren3 = new Gerenciamento (month2+"-"+year1, calculadora.getkWh3 () , calculadora.getEmail ());
+                geren1.setUf (indentificadorUF (dUser.readCep (calculadora.getEmail ())));;
+
+                d.create (geren3);
+                d.create (geren2);
+                d.create (geren1);
+            }
+        }else {
+            String month1 = "12";
+            String year1 = String.valueOf (year - 1);
+            Gerenciamento geren2 = new Gerenciamento (month1+"-"+year1, calculadora.getkWh2 () , calculadora.getEmail ());
+            geren1.setUf (indentificadorUF (dUser.readCep (calculadora.getEmail ())));
+
+            String month2 = "11";
+            Gerenciamento geren3 = new Gerenciamento (month2 + "-" + year1 , calculadora.getkWh3 () , calculadora.getEmail ());
+            geren1.setUf (indentificadorUF (dUser.readCep (calculadora.getEmail ())));
+
+            d.create (geren3);
+            d.create (geren2);
+            d.create (geren1);
+        }
+
+
+    }
+
 
     public List<GerenciamentoDTO> getList (String email, int nplacas) throws SQLException {
         UserDao dUser = new UserDao();

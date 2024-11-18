@@ -1,5 +1,6 @@
 package br.com.energynow.Resources;
 
+import br.com.energynow.DTO.CalcuraloraGerenDTO;
 import br.com.energynow.DTO.GerenciamentoDTO;
 import br.com.energynow.Service.GerenciamentoService;
 import jakarta.ws.rs.*;
@@ -18,6 +19,27 @@ public class GerenciamentoResouce {
     public Response create(GerenciamentoDTO geren) {
         try {
             gerenService.create (geren);
+            return Response.ok ().build ();
+
+        } catch (SQLException e) {
+            if (e.getErrorCode () == 0) {
+                return Response.status (Response.Status.NOT_FOUND)
+                        .entity ("{\"error\":\"Usuario não encontrado\"}")
+                        .build ();
+            } else {
+                return Response.status (Response.Status.INTERNAL_SERVER_ERROR)
+                        .entity ("{\"error\":\"Erro inesperado: " + e.getMessage () + "\"}")
+                        .build ();
+            }
+        }
+    }
+
+    @POST
+    @Path("createGrup")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createGrup(CalcuraloraGerenDTO geren) {
+        try {
+            gerenService.createGrupo (geren);
             return Response.ok ().build ();
 
         } catch (SQLException e) {
