@@ -35,12 +35,11 @@ public class GerenciamentoResouce {
 
     @GET
     @Path ("getLista/{email}/{n}")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getLista(@PathParam ("email")String email, @PathParam ("n") int n){
+    public Response getLista(@PathParam ("email")String email,@PathParam ("n")int n ){
         try {
             List<GerenciamentoDTO> list = gerenService.getList (email, n);
-            return Response.accepted(list).build();
+            return Response.ok(list).build();
         } catch (SQLException e) {
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity("{\"error\":\"Erro inesperado: " + e.getMessage() + "\"}")
@@ -61,16 +60,15 @@ public class GerenciamentoResouce {
         try {
             gerenService.update (geren);
             return Response.accepted ().build ();
-
         }catch (SQLException e){
             return Response.status (Response.Status.BAD_REQUEST)
-                    .entity ("{\"error\":\"Erro ao atualizar dados.\"}\n" + e.getMessage ())
+                    .entity ("{\"error\":\"Erro ao atualizar dados.\"\n"+ e.getMessage() + "\"}")
                     .build ();
         }
     }
 
     @DELETE
-    @Path ("delete/id")
+    @Path ("delete/{id}")
     public Response delete (@PathParam ("id") int id) {
 
         try {
@@ -83,8 +81,4 @@ public class GerenciamentoResouce {
                     .build ();
         }
     }
-
-
-
-
 }

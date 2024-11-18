@@ -34,7 +34,7 @@ public class GerenciamentoService {
                 GerenciamentoDTO geren = new GerenciamentoDTO (l.get (i));
 
                 //Metodos para calcular os valores
-                double p = precoUF (indentificadorUF (dUser.readCep (geren.getEmail ())));
+                double p = precoUF (indentificadorUF (dUser.readCep (email)));
                 geren.setPrecokWhN (precoN (p, geren.getkWh ()));
                 geren.setPrecokWhE (precoCE (p,geren.getkWh()));
                 geren.setPrecokWhR (precoCP (p, geren.getkWh () , nplacas));
@@ -43,16 +43,16 @@ public class GerenciamentoService {
                 list.add (geren);
             }
         }else {
-            for (int i = 0; i <= l.size (); ++i){
+            for (int i = 0; i < l.size (); ++i){
                 GerenciamentoDTO geren = new GerenciamentoDTO (l.get (i));
 
                 //Metodos para calcular os valores
-                double p = precoUF (indentificadorUF (dUser.readCep (geren.getEmail ())));
+                double p = precoUF (indentificadorUF (dUser.readCep (email)));
                 geren.setPrecokWhN (precoN (p, geren.getkWh ()));
                 geren.setPrecokWhE (precoCE (p,geren.getkWh()));
                 geren.setPrecokWhR (precoCP (p, geren.getkWh () , nplacas));
                 //metodo para pegar o month
-                geren.setMonth (geren.getData ());
+                geren.setMonth (transformaMes(geren.getData ()));
                 list.add (geren);
             }
         }
@@ -155,7 +155,7 @@ public class GerenciamentoService {
 
     //Com habitos de economia
     private double precoCE(double ufpreco, int kWh){
-        return (ufpreco * kWh)*0.2;
+        return (ufpreco * kWh) - (ufpreco * kWh)*0.2;
     }
 
     //Com placa solar gerando 65 kWh por mes
@@ -171,7 +171,7 @@ public class GerenciamentoService {
                 "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
         };
 
-        int nDMes = Integer.parseInt (data.substring (3, data.length () -5));
+        int nDMes = Integer.parseInt (data.substring (5, data.length () -3));
 
         return months[nDMes - 1];
     }

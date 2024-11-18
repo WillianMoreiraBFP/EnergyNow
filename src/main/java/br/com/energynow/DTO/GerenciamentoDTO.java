@@ -26,7 +26,8 @@ public class GerenciamentoDTO {
         this.month = month;
     }
 
-    public GerenciamentoDTO(String data , int kWh , String email) {
+    public GerenciamentoDTO(int id, String data , int kWh , String email) {
+        this.id = id;
         this.data = data;
         this.kWh = kWh;
         this.email = email;

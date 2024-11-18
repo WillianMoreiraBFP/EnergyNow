@@ -13,20 +13,19 @@ public class GerenciamentoDao implements IDao<Gerenciamento, Integer> {
     @Override
     public void create(Gerenciamento geren) throws SQLException {
 
-        String sql = "INSERT INTO t_gerenciamento (data, kwh, email, UF) VALUES (TO_DATE('?', 'MM-YYYY'), ?, ?, ?, ?) ";
+        String sql = "INSERT INTO t_gerenciamento (data, kwh, email, UF) VALUES (TO_DATE(?, 'MM-YYYY'), ?, ?, ?) ";
         conexaoJDBC.conectar();
         Connection conexao = conexaoJDBC.getConexao();
 
         PreparedStatement statement = conexao.prepareStatement(sql);
         statement.setString (1, geren.getData ());
-        statement.setString (2, geren.getEmail ());
         statement.setInt (2, geren.getkWh ());
+        statement.setString (3, geren.getEmail ());
         statement.setString (4, geren.getUf ());
-        statement.execute();
+        statement.executeUpdate();
 
         statement.close();
         conexao.close();
-
 
     }
 
@@ -52,12 +51,14 @@ public class GerenciamentoDao implements IDao<Gerenciamento, Integer> {
     public List<Gerenciamento> readList(String email) throws SQLException{
         List<Gerenciamento> v = new ArrayList<> ();
 
-        String sql = "SELECT  id, data, kwh, email, UF FROM t_gerenciamento WHERE email = " + email;
+        String sql = "SELECT  id, data, kwh, email, UF FROM t_gerenciamento WHERE email = ?";
         conexaoJDBC.conectar ();
         Connection conexao = conexaoJDBC.getConexao ();
 
-        Statement statement = conexao.createStatement();
-        ResultSet result = statement.executeQuery(sql);
+        PreparedStatement statement = conexao.prepareStatement(sql);
+        statement.setString(1, email);
+
+        ResultSet result = statement.executeQuery();
 
         while (result.next()) {
             Gerenciamento gerenciamento = new Gerenciamento ();
@@ -74,16 +75,17 @@ public class GerenciamentoDao implements IDao<Gerenciamento, Integer> {
 
     @Override
     public void update(Gerenciamento geren) throws SQLException {
-        String sql = "UPDATE t_gerenciamento SET data = TO_DATE('?', 'MM-YYYY'), kwh= ?, email= ?, UF= ? WHERE id = ?";
+        String sql = "UPDATE t_gerenciamento SET data = TO_DATE(?, 'MM-YYYY'), kwh= ?, UF= ? WHERE id = ?";
         conexaoJDBC.conectar ();
         Connection conexao = conexaoJDBC.getConexao ();
 
         PreparedStatement statement = conexao.prepareStatement (sql);
         statement.setString (1, geren.getData ());
         statement.setInt (2, geren.getkWh ());
-        statement.setString (3, geren.getEmail ());
-        statement.setString (4, geren.getUf ());
-        statement.setInt (5, geren.getId ());
+        statement.setString (3, geren.getUf ());
+        statement.setInt (4, geren.getId ());
+
+        statement.executeUpdate();
 
         statement.close ();
         conexao.close ();

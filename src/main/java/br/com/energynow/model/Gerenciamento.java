@@ -27,6 +27,7 @@ public class Gerenciamento {
     }
 
     public Gerenciamento(GerenciamentoDTO gerenDTO) {
+        this.id = gerenDTO.getId ();
         this.data = gerenDTO.getData ();
         this.kWh = gerenDTO.getkWh ();
         this.email = gerenDTO.getEmail ();
