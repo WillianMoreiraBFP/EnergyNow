@@ -9,10 +9,10 @@ public class GerenciamentoDTO {
     private double precokWhN;//precokWh Normal
     private double precokWhE;//precokWh se a pessoa economisar
     private double precokWhR;//precokWh se a pessoa utilizar energia renovavel(Placa solar)
-    private String email;
-    private String month;
     private double economiaE;
     private double economiaR;
+    private String email;
+    private String month;
 
     public GerenciamentoDTO() {
     }

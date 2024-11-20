@@ -11,9 +11,11 @@ public class UserService {
     UserDao d = new UserDao();
 
     public User cadastro (User user) throws SQLException, CEPInvalidoException {
-        user.setCep (validarCep (user.getCep ()));
-        d.create(user);
-        d.read(user);
+        if(validarCep (user.getCep ())) {
+            user.setCep (formatarCep (user.getCep ()));
+            d.create (user);
+            d.read (user);
+        }
         return user;
     }
 
@@ -33,14 +35,21 @@ public class UserService {
         d.delete(email);
     }
 
-    private static String validarCep(String cep) throws CEPInvalidoException {
+    private boolean validarCep(String cep)throws CEPInvalidoException{
         cep = cep.replaceAll ("[^0-9]", "");
 
         if (cep.length () != 8) {
             throw new CEPInvalidoException ();
         } else {
-            return cep.substring (0 , 5) + "-" + cep.substring (5);
+            return true;
         }
+    }
+
+    private static String formatarCep(String cep){
+        cep = cep.replaceAll ("[^0-9]", "");
+        
+        return cep.substring (0 , 5) + "-" + cep.substring (5);
+        
     }
 }
 

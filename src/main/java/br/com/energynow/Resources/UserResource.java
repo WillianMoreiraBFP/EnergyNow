@@ -34,7 +34,13 @@ public class UserResource {
                         .build ();
             }
         } catch (CEPInvalidoException e) {
-            throw new RuntimeException (e);
+            return Response.status (Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity ("{\"error\":\""+e.getMessage ()+"\"}")
+                    .build ();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"error\":\"Erro inesperado: " + e.getMessage() + "\"}")
+                    .build();
         }
     }
 
@@ -49,6 +55,8 @@ public class UserResource {
 
             return Response.ok(user).build();
         }catch (SQLException e) {
+            System.out.println (e.getErrorCode ());
+            System.out.println (e.getMessage ());
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity("{\"error\":\"Usuário não encontrado ou senha incorreta.\"}")
                     .build();
@@ -72,6 +80,10 @@ public class UserResource {
             return Response.status (Response.Status.BAD_REQUEST)
                     .entity ("{\"error\":\"Erro ao atualizar dados.\"\n"+ e.getMessage() + "\"}")
                     .build ();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"error\":\"Erro inesperado: " + e.getMessage() + "\"}")
+                    .build();
         }
 
     }
@@ -88,11 +100,11 @@ public class UserResource {
             return Response.status (Response.Status.NOT_FOUND)
                     .entity ("{\"error\":\"Usuário não encontrado.\"}")
                     .build ();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"error\":\"Erro inesperado: " + e.getMessage() + "\"}")
+                    .build();
         }
 
     }
-
-
-
-
 }

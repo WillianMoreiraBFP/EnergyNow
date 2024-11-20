@@ -31,6 +31,10 @@ public class GerenciamentoResouce {
                         .entity ("{\"error\":\"Erro inesperado: " + e.getMessage () + "\"}")
                         .build ();
             }
+        } catch (Exception e){
+            return Response.status (Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity ("{\"error\":\"Erro inesperado: " + e.getMessage () + "\"}")
+                    .build ();
         }
     }
 
@@ -52,6 +56,10 @@ public class GerenciamentoResouce {
                         .entity ("{\"error\":\"Erro inesperado: " + e.getMessage () + "\"}")
                         .build ();
             }
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"error\":\"Erro inesperado: " + e.getMessage() + "\"}")
+                    .build();
         }
     }
 
@@ -86,6 +94,10 @@ public class GerenciamentoResouce {
             return Response.status (Response.Status.BAD_REQUEST)
                     .entity ("{\"error\":\"Erro ao atualizar dados.\"\n"+ e.getMessage() + "\"}")
                     .build ();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"error\":\"Erro inesperado: " + e.getMessage() + "\"}")
+                    .build();
         }
     }
 
@@ -101,6 +113,10 @@ public class GerenciamentoResouce {
             return Response.status (Response.Status.NOT_FOUND)
                     .entity ("{\"error\":\"Usuário não encontrado.\"}")
                     .build ();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"error\":\"Erro inesperado: " + e.getMessage() + "\"}")
+                    .build();
         }
     }
 }

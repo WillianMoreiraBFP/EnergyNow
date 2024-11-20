@@ -23,7 +23,7 @@ public class GerenciamentoService {
         d.create (geren);
     }
 
-    public void createGrupo(CalcuraloraGerenDTO calculadora) throws SQLException {
+    public void createGrupo (CalcuraloraGerenDTO calculadora) throws SQLException {
         UserDao dUser = new UserDao();
         LocalDate date = LocalDate.now ();
 
@@ -152,11 +152,6 @@ public class GerenciamentoService {
     private static String indentificadorUF(String cep){
         // Remover qualquer caractere não numérico, caso o CEP tenha pontos ou traços.
         cep = cep.replaceAll("[^0-9]", "");
-
-        // Verificar se o CEP tem 8 dígitos
-        if (cep.length() != 8) {
-            return "CEP inválido";
-        }
 
         // Converter o CEP para um número inteiro
         int cepInt = Integer.parseInt(cep);
